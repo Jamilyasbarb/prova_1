@@ -129,6 +129,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         celular = double.parse(value.toString());
                         print(celular);
                       }
+                      return null;
                     },
                   ),
                   TextFormField(
@@ -177,6 +178,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             }else{
                               senha = value.toString();
                             }
+                            return null;
                           },
                         ),
                       ),

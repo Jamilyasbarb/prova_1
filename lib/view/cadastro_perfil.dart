@@ -187,7 +187,6 @@ class _CadastroPerfilState extends State<CadastroPerfil> {
                             ),
                           ],
                         ),
-                
                       ],
                     ),
                   ),

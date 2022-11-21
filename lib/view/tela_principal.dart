@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:vita_health/view/register_page_component.dart';
 
 import '../models/user_model.dart';
 
@@ -11,17 +10,23 @@ class TelaPrincipal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        backgroundColor: Color.fromARGB(255, 64, 64, 65),
+      ),
       drawer: Drawer(
         child: ListView(
           children:  [
             UserAccountsDrawerHeader(
-              arrowColor: Colors.red,
+              decoration: BoxDecoration(
+                color:Colors.red,
+              ),
               currentAccountPicture: 
               SizedBox(
-                child: Container(
-                  decoration: BoxDecoration(
-                    image: DecorationImage( fit: BoxFit.fitWidth, image: FileImage(user.imagem))
+                child: ClipOval(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      image: DecorationImage( fit: BoxFit.fitWidth, image: FileImage(user.imagem))
+                    ),
                   ),
                 ),
               ),
@@ -34,7 +39,7 @@ class TelaPrincipal extends StatelessWidget {
                 onTap: (){
                   // print('object');
                 } ,
-                leading: Icon(Icons.home),
+                leading: Icon(Icons.home, color: Color.fromARGB(255, 46, 217, 195),),
                 title: Text('Home'),
               ),
             ),
@@ -42,7 +47,7 @@ class TelaPrincipal extends StatelessWidget {
               onTap: (){
                 // print('object');
               },
-              leading: Icon(Icons.emoji_people),
+              leading: Icon(Icons.emoji_people, color: Color.fromARGB(255, 46, 217, 195),),
               title: Text('Exercícios'),
               
             ),
@@ -50,7 +55,7 @@ class TelaPrincipal extends StatelessWidget {
               onTap: (){
                 // print('object');
               },
-              leading: Icon(Icons.money),
+              leading: Icon(Icons.money, color: Color.fromARGB(255, 46, 217, 195),),
               title: Text('Wscoin'),
               
             ),
@@ -58,7 +63,7 @@ class TelaPrincipal extends StatelessWidget {
               onTap: (){
                 // print('object');
               },
-              leading: Icon(Icons.shopping_cart),
+              leading: Icon(Icons.shopping_cart, color: Color.fromARGB(255, 46, 217, 195),),
               title: Text('Loja'),
               
             ),
@@ -66,7 +71,7 @@ class TelaPrincipal extends StatelessWidget {
               onTap: (){
                 // print('object');
               },
-              leading: Icon(Icons.settings),
+              leading: Icon(Icons.settings, color: Color.fromARGB(255, 46, 217, 195),),
               title: Text('Configurações'),
               
             ),
@@ -75,7 +80,7 @@ class TelaPrincipal extends StatelessWidget {
                 // print('object');
                 Navigator.of(context).pushReplacementNamed('/login');
               },
-              leading: Icon(Icons.logout),
+              leading: Icon(Icons.logout, color: Color.fromARGB(255, 46, 217, 195),),
               title: Text('Logout'),
               
             ),
@@ -115,22 +120,4 @@ class TelaPrincipal extends StatelessWidget {
     );
   }
 }
-
-// ListView.builder(
-//         itemCount: usersList.length,
-//         itemBuilder: (context, index) {
-//           return Center(
-//             child: Column(
-//               children: [
-//                 Text('${usersList[index].nome}'),
-//                 Text('${usersList[index].email}'),
-//                 Text('${usersList[index].celular}'),
-//                 Text('${usersList[index].senha}'),
-
-                
-//               ],
-//             ),
-//           );
-//         },
-//       ),
 

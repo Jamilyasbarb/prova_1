@@ -1,11 +1,6 @@
-import 'dart:math';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:intl/intl.dart';
-import 'package:vita_health/view/tela_principal.dart';
 
 class TreinoSemanal extends StatefulWidget {
   const TreinoSemanal({super.key});
@@ -19,9 +14,9 @@ class _TreinoSemanalState extends State<TreinoSemanal> {
   List<bool> clicado1 = [];
   List<bool> clicado2 = [];
   List<bool> clicado3 = [];
-  TextEditingController timeInput = TextEditingController();
-  TextEditingController timeInput2 = TextEditingController();
-  TextEditingController timeInput3 = TextEditingController();
+  TextEditingController horarioInput = TextEditingController();
+  TextEditingController horarioInput2 = TextEditingController();
+  TextEditingController horarioInput3 = TextEditingController();
   bool treinar1 = false;
   bool treinar2 = false;
   bool treinar3 = false;
@@ -57,66 +52,27 @@ class _TreinoSemanalState extends State<TreinoSemanal> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Expanded(
-                          flex: 2,
-                          child: CheckboxListTile(
-                            contentPadding: EdgeInsets.all(0),
-                            controlAffinity: ListTileControlAffinity.leading,
-                            title: Text('Caminhada:'),
-                            value: treinar1,
-                            onChanged: (value){
-                              setState(() {
-                                treinar1 = value!;
-                              });
-                            },
-                          ),
-                        ),
-                        Expanded(
-                          flex: 2,
-                          child: TextFormField(
-                            decoration: InputDecoration(
-                              labelText: 'Horário'
-                            ),
-                            mouseCursor: MouseCursor.defer,
-                            enabled: treinar1,
-                            controller: timeInput,
-                            readOnly: true,
-                            onTap: () async{
-                              TimeOfDay? pickedTime = await showTimePicker(
-                                initialTime: TimeOfDay.now(),
-                                context: context, 
-                              );
-                              if(pickedTime != null){
-                                DateTime parsedTime  = DateFormat.Hm().parse(pickedTime.format(context).toString());
-                                String formattedTime = DateFormat('kk:mm').format(parsedTime);
+                            flex: 2,
+                            child: CheckboxListTile(
+                              contentPadding: EdgeInsets.all(0),
+                              controlAffinity: ListTileControlAffinity.leading,
+                              title: Text('Caminhada'),
+                              value: treinar1,
+                              onChanged: (value){
                                 setState(() {
-                                  timeInput.text = formattedTime; 
+                                  if(!value!){
+                                    clicado1 = List<bool>.filled(semana.length, false);
+                                  }
+                                  treinar1 = value;
                                 });
-                              }
-                            },
+                              },
+                            ),
                           ),
-                        ),
+                        _horario(horarioInput, treinar1)
                       ],
                     ),
                   ),
-                  SizedBox(
-                    height: 40,
-                    width: MediaQuery.of(context).size.width,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: semana.length,
-                      itemBuilder: (context, index) =>
-                        Padding(
-                          padding: const EdgeInsets.only(right:4),
-                          child: Checkbox(
-                            checkColor: Colors.yellow,
-                            value: clicado1[index],
-                            onChanged: treinar1 ? ((value) => setState(() {
-                              clicado1[index] = value!;
-                            })) : null,
-                          ),
-                        ),
-                    ),
-                  ),
+                   _selecionaDiaSemana(treinar1, clicado1),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -141,63 +97,23 @@ class _TreinoSemanalState extends State<TreinoSemanal> {
                             child: CheckboxListTile(
                               contentPadding: EdgeInsets.all(0),
                               controlAffinity: ListTileControlAffinity.leading,
-                              title: Text('Corrida:'),
+                              title: Text('Corrida'),
                               value: treinar2,
                               onChanged: (value){
                                 setState(() {
-                                  treinar2 = value!;
+                                  if(!value!){
+                                    clicado2 = List<bool>.filled(semana.length, false);
+                                  }
+                                  treinar2 = value;
                                 });
                               },
                             ),
                           ),
-                          Expanded(
-                            flex: 2,
-                            child: TextFormField(
-                              decoration: InputDecoration(
-                                labelText: 'Horário',
-                              ),
-                              enabled: treinar2,
-                              controller: timeInput2,
-                              readOnly: true,
-                              onTap: () async{
-                                TimeOfDay? pickedTime = await showTimePicker(
-                                  initialTime: TimeOfDay.now(),
-                                  context: context, 
-                                );
-                                if(pickedTime != null){
-                                  DateTime parsedTime  = DateFormat.jm().parse(pickedTime.format(context).toString());
-                                  String formattedTime = DateFormat('hh:mm').format(parsedTime);
-                                  setState(() {
-                                    timeInput2.text = formattedTime; 
-                                  });
-                                }
-                              },
-                            ),
-                          ),
+                          _horario(horarioInput2, treinar2)
                         ],
                       ),
                     ),
-                    SizedBox(
-                      height: 40,
-                      width: MediaQuery.of(context).size.width,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: semana.length,
-                        itemBuilder: (context, index) =>
-                          Padding(
-                            padding: const EdgeInsets.only(right:4),
-                            child: Checkbox(
-                              checkColor: Colors.yellow,
-                              value: clicado2[index], 
-                              onChanged: treinar2 ? (value){
-                                setState(() {
-                                  clicado2[index] = value!;
-                                });
-                              } : null,
-                            ),
-                          ),
-                      ),
-                    ),
+                     _selecionaDiaSemana(treinar2, clicado2),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
@@ -223,63 +139,23 @@ class _TreinoSemanalState extends State<TreinoSemanal> {
                             child: CheckboxListTile(
                               contentPadding: EdgeInsets.all(0),
                               controlAffinity: ListTileControlAffinity.leading,
-                              title: Text('Pular corda:'),
+                              title: Text('Pular Corda'),
                               value: treinar3,
                               onChanged: (value){
+                                if(!value!){
+                                  clicado3 = List<bool>.filled(semana.length, false);
+                                }
                                 setState(() {
-                                  treinar3 = value!;
+                                  treinar3 = value;
                                 });
                               },
                             ),
                           ),
-                          Expanded(
-                            flex: 2,
-                            child: TextFormField(
-                              decoration: InputDecoration(
-                                labelText: 'Horário',
-                              ),
-                              enabled: treinar3,
-                              controller: timeInput3,
-                              readOnly: true,
-                              onTap: () async{
-                                TimeOfDay? pickedTime = await showTimePicker(
-                                  initialTime: TimeOfDay.now(),
-                                  context: context, 
-                                );
-                                if(pickedTime != null){
-                                  DateTime parsedTime  = DateFormat.jm().parse(pickedTime.format(context).toString());
-                                  String formattedTime = DateFormat('hh:mm').format(parsedTime);
-                                  setState(() {
-                                    timeInput3.text = formattedTime; 
-                                  });
-                                }
-                              },
-                            ),
-                          ),
+                          _horario(horarioInput3, treinar3),
                         ],
                       ),
                     ),
-                    SizedBox(
-                      height: 40,
-                      width: MediaQuery.of(context).size.width,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: semana.length,
-                        itemBuilder: (context, index) =>
-                          Padding(
-                            padding: const EdgeInsets.only(right:4),
-                            child: Checkbox(
-                              checkColor: Colors.yellow,
-                              value: clicado3[index], 
-                              onChanged: treinar3 ? (value){
-                                setState(() {
-                                  clicado3[index] = value!;
-                                });
-                              } : null,
-                            ),
-                          ),
-                      ),
-                    ),
+                    _selecionaDiaSemana(treinar3, clicado3),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
@@ -289,10 +165,60 @@ class _TreinoSemanalState extends State<TreinoSemanal> {
                   ],
                 ),
               ),
-             
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _horario(TextEditingController hora, bool treinoSelecionado){
+    return Expanded(
+      flex: 2,
+      child: TextFormField(
+        decoration: InputDecoration(
+          labelText: 'Horário',
+        ),
+        enabled: treinoSelecionado,
+        controller: hora,
+        readOnly: true,
+        onTap: () async{
+          TimeOfDay? pickedTime = await showTimePicker(
+            initialTime: TimeOfDay.now(),
+            context: context, 
+          );
+          if(pickedTime != null){
+            DateTime parsedTime  = DateFormat.jm().parse(pickedTime.format(context).toString());
+            String formattedTime = DateFormat('hh:mm').format(parsedTime);
+            setState(() {
+              hora.text = formattedTime; 
+            });
+          }
+        }
+      ),
+    );
+  }
+
+  Widget _selecionaDiaSemana(bool treinar, List<bool>clicado){
+    return SizedBox(
+      height: 40,
+      width: MediaQuery.of(context).size.width,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: semana.length,
+        itemBuilder: (context, index) =>
+          Padding(
+            padding: const EdgeInsets.only(right:4),
+            child: Checkbox(
+              checkColor: Colors.yellow,
+              value: clicado[index], 
+              onChanged: treinar ? (value){
+                setState(() {
+                  clicado[index] = value!;
+                });
+              } : null ,
+            ),
+          ),
       ),
     );
   }
