@@ -36,13 +36,17 @@ class _LoginFormState extends State<LoginForm> {
               width: 300,
               child: TextFormField(
                 enabled: !bloqueado,
+                 
                 // controller: fieldUsuario,
                 decoration: InputDecoration(
                   labelText: 'Usuário',
-                  border: OutlineInputBorder(
+                  enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(40),
-                    borderSide: BorderSide(color: Colors.pink),
+                    borderSide: BorderSide(color: Color.fromRGBO(46, 217, 195, 1), width: 2)
                   ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(40)
+                  )
                 ),
                 validator: (value) {
                   if(value == '' || value== null){
